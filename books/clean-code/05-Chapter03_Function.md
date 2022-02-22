@@ -26,17 +26,16 @@
   - 일반적으로 출력 인수는 피해야 한다. 함수에서 상태를 변경해야 한다면 함수가 속한 객체 상태를 변경하는 방식을 택한다.
 #### 명령과 조회를 분리하라!
 ```java
-// "set"이라는 단어가 동사인지 형용사인지 분간하기 어렵다.  
+// "set"이라는 단어가 동사인지 형용사인지 분간하기 어렵다.
 // 함수를 구현한 개발자는 "set"을 동사로 의도했다. 하지만 if 문에 넣고 보면 형용사로 느껴진다.  
 // 그래서 if 문은 "username 속성이 unclebob으로 설정되 어 있다면...”으로 읽힌다.  
 // "username을 unclebob으로 설정하는데 성공하면"으로 읽히지 않는다.  
-if (set("username", "unclebob"))...  
+if (set("username", "unclebob"))  
 ```
 ```java
-// 명령과 조회를 분리하라!  
-if (attributeExistsC'username")) {  
-   setAttribute("username", "unclebob");  
-}  
+if (attributeExists("username")) {
+   setAttribute("username", "unclebob"); // 명령과 조회를 분리하라!  
+}
 ```
 #### 오류 코드보다 예외를 사용하라!
   - 명령 함수에서 오류 코드를 반환하는 방식은 명령/조회 분리 규칙을 미묘하게 위반한다.
