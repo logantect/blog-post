@@ -17,7 +17,7 @@ public class PostController {
 
   @PostMapping
   public ResponseEntity<?> registerPost(@RequestBody PostDto.RegisterPost dto) {
-    postService.proxyPost(dto.toCommand());
+    postService.registerPost(dto.toCommand());
     return ResponseEntity.ok("ok");
   }
 

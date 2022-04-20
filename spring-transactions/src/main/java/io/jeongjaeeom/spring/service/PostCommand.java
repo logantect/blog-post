@@ -25,4 +25,19 @@ public class PostCommand {
     }
   }
 
+  @Getter
+  public static class UpdatePost {
+
+    private String title;
+
+    private String content;
+
+    @Builder
+    public UpdatePost(String title, String content) {
+      this.title = title;
+      this.content = content;
+    }
+
+  }
+
 }

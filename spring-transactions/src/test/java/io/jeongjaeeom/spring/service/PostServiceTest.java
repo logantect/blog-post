@@ -1,9 +1,14 @@
 package io.jeongjaeeom.spring.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.jeongjaeeom.spring.domain.Post;
 import io.jeongjaeeom.spring.domain.PostRepository;
 import io.jeongjaeeom.spring.service.PostCommand.RegisterPost;
+import io.jeongjaeeom.spring.service.PostCommand.UpdatePost;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,12 +27,11 @@ class PostServiceTest {
   @Autowired
   private PostRepository postRepository;
 
+  @Autowired
   private PostService postService;
 
-  @BeforeEach
-  void setUp() {
-    this.postService = new PostService(postRepository);
-  }
+  @Autowired
+  private CommentService commentService;
 
   @AfterEach
   void tearDown() {
@@ -35,7 +39,23 @@ class PostServiceTest {
   }
 
   @Test
-  void proxyPost() {
-    postService.proxyPost(new RegisterPost("제목", "내용"));
+  void register() {
+    Long postId = postService.registerPost(new RegisterPost("제목", "내용"));
+    assertThat(postId).isNotNull();
+  }
+
+  @Test
+  void registerWithComment() {
+    postService.registerPostWithComment(new RegisterPost("제목", "내용"));
+    assertThatThrownBy(() -> postService.registerPostWithComment(new RegisterPost("제목", "내용")))
+            .isInstanceOf(RuntimeException.class);
+  }
+
+  @Test
+  void proxyUpdatePost() {
+    Long postId = postService.registerPost(new RegisterPost("제목", "내용"));
+    postService.updateProxy(postId, new UpdatePost("제목", "내용수정"));
+    Post updatedPost = postRepository.findById(postId).orElseThrow();
+    assertThat(updatedPost.getContent()).isEqualTo("내용");
   }
 }
