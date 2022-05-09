@@ -1,5 +1,5 @@
-# Unit Testing In Java
-Junit 학습 및 Java API 등을 단위테스트 하기 위한 공간입니다.
+# Java API 학습
+Java API 학습을 위한 공간입니다.
 
 
 # References
